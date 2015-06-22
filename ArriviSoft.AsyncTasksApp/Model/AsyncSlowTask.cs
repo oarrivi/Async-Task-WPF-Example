@@ -37,11 +37,11 @@ namespace ArriviSoft.AsyncTasksApp.Model
             throw new NotImplementedException();
         }
 
-        public async Task<TimeSpan> StartAsync(object userData)
+        public async Task<TaskResult> StartAsync(object userData)
         {
             this.userData = userData;
 
-            var task = Task.Run<TimeSpan>(() =>
+            var task = Task.Run<TaskResult>(() =>
                 {
                     Stopwatch sw = Stopwatch.StartNew();
 
@@ -50,16 +50,19 @@ namespace ArriviSoft.AsyncTasksApp.Model
 
 
                     sw.Stop();
-                    return sw.Elapsed;
+
+                    TaskResult result = new TaskResult(sw.Elapsed);
+                    
+                    return result;
                 });
 
             // Await here until task finishes...
 
-            this.Result = await task;
+            var taskResult = await task;
             
             // Note: It isn't necessary to raise events
 
-            return this.Result;
+            return taskResult;
         }
 
         private void OnTaskFinished(Exception error, bool cancelled, TimeSpan result)

@@ -54,6 +54,6 @@ namespace ArriviSoft.AsyncTasksApp.Model
         /// Starts the task in asynchronous mode.
         /// </summary>
         /// <param name="userData">The user data.</param>
-        void StartAsync(object userData);
+        Task<TaskResult> StartAsync(object userData);
     }
 }

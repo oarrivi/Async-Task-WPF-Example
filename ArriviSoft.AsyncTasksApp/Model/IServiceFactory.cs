@@ -15,5 +15,8 @@ namespace ArriviSoft.AsyncTasksApp.Model
         /// </summary>
         /// <returns>A task instance.</returns>
         ITaskService CreateTask();
+
+        ITaskService CreateTask(string name);
+
     }
 }

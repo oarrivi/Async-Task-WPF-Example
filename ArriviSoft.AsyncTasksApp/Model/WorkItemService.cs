@@ -11,22 +11,19 @@ namespace ArriviSoft.AsyncTasksApp.Model
     /// <summary>
     /// Represents a slow task that does nothing.
     /// </summary>
-    public class AsyncSlowTask : ITaskService
+    public class WorkItemService : ITaskService
     {
         private object userData = null;
 
         public event TaskProgressChangedEventHander StatusChanged;
         public event AsyncTaskFinishedEventHandler TaskFinished;
 
-        public AsyncSlowTask(string name, string description)
+        public WorkItemService(string name)
         {
             this.Name = name;
-            this.Description = description;
         }
 
         public string Name { get; private set; }
-        
-        public string Description { get; private set; }
         
         public double Progress { get; private set; }
 
@@ -37,32 +34,33 @@ namespace ArriviSoft.AsyncTasksApp.Model
             throw new NotImplementedException();
         }
 
-        public async Task<TaskResult> StartAsync(object userData)
+        public async Task<TaskResult> StartAsync(IProgress<TaskProgressChangedEventArgs> progress)
         {
-            this.userData = userData;
 
-            var task = Task.Run<TaskResult>(() =>
+            var task = Task.Run<TimeSpan>(async () =>
                 {
                     Stopwatch sw = Stopwatch.StartNew();
 
-
-
+                    for (int i = 0; i <= 100; i++)
+                    {
+                        await Task.Delay(100);
+                        progress.Report(new TaskProgressChangedEventArgs(Convert.ToDouble(i) / 100.0));
+                    }
 
 
                     sw.Stop();
 
-                    TaskResult result = new TaskResult(sw.Elapsed);
-                    
-                    return result;
+                    return sw.Elapsed;
                 });
 
             // Await here until task finishes...
+            TimeSpan ts = await task;
 
-            var taskResult = await task;
+            var result = new TaskResult(ts);
             
             // Note: It isn't necessary to raise events
 
-            return taskResult;
+            return result;
         }
 
         private void OnTaskFinished(Exception error, bool cancelled, TimeSpan result)

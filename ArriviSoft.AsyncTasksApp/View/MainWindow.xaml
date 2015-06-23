@@ -6,27 +6,50 @@
         xmlns:ignore="http://www.ignore.com"
         mc:Ignorable="d ignore"
         Height="300"
-        Width="300"
-        Title="MVVM Light Application"
+        Width="456.757"
+        Title="Slow tasks progress example"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
     
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Skins/MainSkin.xaml" />
+                <ResourceDictionary Source="MainWindowResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <DockPanel x:Name="LayoutRoot" LastChildFill="True">
 
-        <TextBlock FontSize="36"
-                   FontWeight="Bold"
-                   Foreground="Purple"
-                   Text="{Binding WelcomeTitle}"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   TextWrapping="Wrap" />
+        <!-- Title -->
+        <Border DockPanel.Dock="Top"
+                Style="{DynamicResource MainTopBorderStyle}">
+            <TextBlock TextWrapping="Wrap" 
+                       VerticalAlignment="Top" 
+                       Style="{DynamicResource TextBlockHeadStyle}">
+                Ejemplo de ejecución de múltiples tareas lentas en segundo plano 
+                mientras reportan progreso y permiten su cancelación.
+            </TextBlock>
+        </Border>
 
-    </Grid>
+        <!-- Status bar -->
+        <Border DockPanel.Dock="Bottom" Style="{DynamicResource StatusBorderStyle}">
+            <TextBlock>
+                <Run Text="Work items:" />
+                <Run Text="{Binding WorkItems.Count, Mode=OneWay}" />
+            </TextBlock>
+        </Border>
+        
+        <!-- Command pane -->
+        <Border DockPanel.Dock="Left" Style="{DynamicResource CommandsBorderStyle}">
+            <ContentControl Content="{Binding Commands}"
+                            ContentTemplate="{StaticResource CommandsTemplate}"/>
+        </Border>
+        
+        <!-- Task list pane -->
+        <Border Style="{DynamicResource WorkItemsBorderStyle}">
+            <ContentControl Content="{Binding WorkItems}"
+                            ContentTemplate="{StaticResource WorkItemsTemplate}" />
+        </Border>
+    </DockPanel>
 </Window>

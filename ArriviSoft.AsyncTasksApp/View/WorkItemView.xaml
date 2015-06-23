@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="ArriviSoft.AsyncTasksApp.View.WorkItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:vm="clr-namespace:ArriviSoft.AsyncTasksApp.ViewModel"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Height="Auto"
+             d:DesignHeight="104.445" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance Type=vm:WorkItemViewModel, IsDesignTimeCreatable=True}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+                <ResourceDictionary Source="WorkItemViewResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border Style="{DynamicResource WorkItemBorderStyle}">
+        
+        <DockPanel LastChildFill="True">
+    
+            <TextBlock DockPanel.Dock="Top" 
+                       Text="{Binding Title}" 
+                       Margin="3"
+                       TextWrapping="Wrap" />
+        
+            <ContentControl DockPanel.Dock="Bottom" 
+                            Content="{Binding Commands}"
+                            ContentTemplate="{StaticResource WorkItemCommandsTemplate}">
+            </ContentControl>    
+        
+            <ProgressBar Minimum="0" Maximum="1" Height="15"
+                         Value="{Binding Progress}" />
+        
+        </DockPanel>
+        
+    </Border>
+
+</UserControl>

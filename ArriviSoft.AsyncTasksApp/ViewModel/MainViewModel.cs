@@ -1,5 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using ArriviSoft.AsyncTasksApp.Model;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace ArriviSoft.AsyncTasksApp.ViewModel
 {
@@ -11,52 +14,152 @@ namespace ArriviSoft.AsyncTasksApp.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private readonly IServiceFactory _dataService;
-
-        /// <summary>
-        /// The <see cref="WelcomeTitle" /> property's name.
-        /// </summary>
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
-
-        private string _welcomeTitle = string.Empty;
-
-        /// <summary>
-        /// Gets the WelcomeTitle property.
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// </summary>
-        public string WelcomeTitle
-        {
-            get
-            {
-                return _welcomeTitle;
-            }
-
-            set
-            {
-                if (_welcomeTitle == value)
-                {
-                    return;
-                }
-
-                _welcomeTitle = value;
-                RaisePropertyChanged(WelcomeTitlePropertyName);
-            }
-        }
+        private readonly IServiceFactory serviceFactory;
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(IServiceFactory dataService)
+        public MainViewModel(IServiceFactory service)
         {
-            _dataService = dataService;
-           
+            this.WorkItems = new ObservableCollection<WorkItemViewModel>();
+
+            serviceFactory = service;
+         
+            this.InitializeCommands();
+
+            // Sample work items
+            if (this.IsInDesignMode)
+            {
+                this.WorkItems.Add(new WorkItemViewModel(null)
+                    {
+                        Title = "Work Item 001",
+                        Progress = 0.8,
+                    });
+
+                this.WorkItems.Add(new WorkItemViewModel(null)
+                {
+                    Title = "Work Item 002",
+                    Progress = 0.4,
+                });
+            }
         }
 
-        ////public override void Cleanup()
-        ////{
-        ////    // Clean up if needed
+        private void InitializeCommands()
+        {
+            var cmds = new List<CommandViewModel>();
+            cmds.Add(new CommandViewModel()
+            {
+                Text = "Launch",
+                Hint = "Launches a new slot task in asynchronous mode",
+                Command = this.LaunchTaskCommand
+            });
 
-        ////    base.Cleanup();
-        ////}
+            this.Commands = new ReadOnlyCollection<CommandViewModel>(cmds);
+        }
+
+        #region Property Commands
+
+        /// <summary>
+        /// The <see cref="Commands" /> property's name.
+        /// </summary>
+        public const string CommandsPropertyName = "Commands";
+
+        private ReadOnlyCollection<CommandViewModel> commands = null;
+
+        /// <summary>
+        /// Sets and gets the Commands property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ReadOnlyCollection<CommandViewModel> Commands
+        {
+            get
+            {
+                return commands;
+            }
+            set
+            {
+                if (commands == value)
+                {
+                    return;
+                }
+                commands = value;
+                RaisePropertyChanged(CommandsPropertyName);
+            }
+        }
+
+        #endregion
+
+        #region Property WorkItems
+
+        /// <summary>
+        /// The <see cref="WorkItems" /> property's name.
+        /// </summary>
+        public const string WorkItemsPropertyName = "WorkItems";
+
+        private ObservableCollection<WorkItemViewModel> workItems = null;
+
+        /// <summary>
+        /// Sets and gets the WorkItems property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ObservableCollection<WorkItemViewModel> WorkItems
+        {
+            get
+            {
+                return workItems;
+            }
+            set
+            {
+                if (workItems == value)
+                {
+                    return;
+                }
+                workItems = value;
+                RaisePropertyChanged(WorkItemsPropertyName);
+            }
+        }
+
+        #endregion
+
+        #region Command LaunchTaskCommand
+
+        private RelayCommand launchTaskCommand;
+
+        /// <summary>
+        /// Gets the LaunchTaskCommand.
+        /// </summary>
+        public RelayCommand LaunchTaskCommand
+        {
+            get
+            {
+                return launchTaskCommand
+                    ?? (launchTaskCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (!LaunchTaskCommand.CanExecute(null))
+                        {
+                            return;
+                        }
+                        this.ExecuteLaunchTaskCommand();
+                    },
+                    () => true));
+            }
+        }
+
+
+        private void ExecuteLaunchTaskCommand()
+        {
+            WorkItemViewModel vm = new WorkItemViewModel(this.serviceFactory.CreateTask());
+            this.WorkItems.Add(vm);
+        }
+
+        #endregion
+
+        public override void Cleanup()
+        {
+            // Clean up if needed
+
+            base.Cleanup();
+        }
     }
 }

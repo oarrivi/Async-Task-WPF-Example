@@ -30,6 +30,7 @@ namespace ArriviSoft.AsyncTasksApp.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<IServiceFactory, TasksFactory>();
+            SimpleIoc.Default.Register<ITaskService>(() => ServiceLocator.Current.GetInstance<IServiceFactory>().CreateTask());
 
             SimpleIoc.Default.Register<MainViewModel>();
         }

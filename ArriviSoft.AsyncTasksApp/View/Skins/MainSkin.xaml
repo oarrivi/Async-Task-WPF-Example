@@ -1,4 +1,58 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
+    <!-- The style for the main border on the top -->
+    <Style x:Key="MainTopBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF1A364D" Offset="0"/>
+                    <GradientStop Color="#FF869DB0" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- The style for the main head text -->
+    <Style x:Key="TextBlockHeadStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+
+    <!-- The style for the commands panel border -->
+    <Style x:Key="StatusBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="BorderThickness" Value="0,1,0,0" />
+        <Setter Property="BorderBrush" Value="LightGray" />
+    </Style>
+
+    <!-- The style for the commands panel border -->
+    <Style x:Key="CommandsBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="BorderThickness" Value="0,0,1,0" />
+        <Setter Property="BorderBrush" Value="LightGray" />
+    </Style>
+    
+    <!-- The style for the command buttons -->
+    <Style x:Key="CommandButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="5,2" />
+        
+    </Style>
+
+    <!-- The style for the Work Items panel border -->
+    <Style x:Key="WorkItemsBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="2" />
+    </Style>
+    
+    <!-- The style for the Work Item border -->
+    <Style x:Key="WorkItemBorderStyle" TargetType="{x:Type Border}">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="LightGray" />
+    </Style>
+    
 </ResourceDictionary>

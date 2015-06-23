@@ -28,11 +28,6 @@ namespace ArriviSoft.AsyncTasksApp.Model
         string Name { get; }
 
         /// <summary>
-        /// Gets the description of the task.
-        /// </summary>
-        string Description { get; }
-
-        /// <summary>
         /// Gets the progress of the task. This values range is from 0 to 1.
         /// </summary>
         double Progress { get; }
@@ -53,7 +48,6 @@ namespace ArriviSoft.AsyncTasksApp.Model
         /// <summary>
         /// Starts the task in asynchronous mode.
         /// </summary>
-        /// <param name="userData">The user data.</param>
-        Task<TaskResult> StartAsync(object userData);
+        Task<TaskResult> StartAsync(IProgress<TaskProgressChangedEventArgs> progress);
     }
 }

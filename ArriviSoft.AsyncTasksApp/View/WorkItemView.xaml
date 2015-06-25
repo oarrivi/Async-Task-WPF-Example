@@ -33,7 +33,8 @@
             </ContentControl>    
         
             <ProgressBar Minimum="0" Maximum="1" Height="15"
-                         Value="{Binding Progress}" />
+                         Value="{Binding Progress}" 
+                         Style="{DynamicResource WorkItemProgressBarStyle}"/>
         
         </DockPanel>
         

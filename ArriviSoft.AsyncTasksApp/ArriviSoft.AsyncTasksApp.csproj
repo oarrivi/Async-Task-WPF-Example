@@ -75,7 +75,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Events.cs" />
     <Compile Include="Model\WorkItemService.cs" />
     <Compile Include="Model\TaskResult.cs" />
     <Compile Include="Model\TasksFactory.cs" />

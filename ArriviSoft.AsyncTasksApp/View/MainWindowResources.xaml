@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:ArriviSoft.AsyncTasksApp.ViewModel"
+                    xmlns:view="clr-namespace:ArriviSoft.AsyncTasksApp.View">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Skins/MainSkin.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!-- Command list template -->
+    <DataTemplate x:Key="CommandsTemplate">
+        <ItemsControl ItemsSource="{Binding}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:CommandViewModel}">
+                    <Button Command="{Binding Command}"
+                            ToolTip="{Binding Hint}"
+                            Style="{StaticResource CommandButtonStyle}">
+                        <TextBlock Text="{Binding Text}" />
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DataTemplate>
+
+    <!-- Task template -->
+    <DataTemplate x:Key="WorkItemTemplate" DataType="{x:Type vm:WorkItemViewModel}">
+        <view:WorkItemView DataContext="{Binding}" />
+    </DataTemplate>
+    
+    <!-- Task list template -->
+    <DataTemplate x:Key="WorkItemsTemplate">
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding}" 
+                          ItemTemplate="{StaticResource WorkItemTemplate}"/>
+        </ScrollViewer>
+    </DataTemplate>
+    
+</ResourceDictionary>

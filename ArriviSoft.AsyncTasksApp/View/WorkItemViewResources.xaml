@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:ArriviSoft.AsyncTasksApp.ViewModel">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Skins/MainSkin.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Command list template -->
+    <DataTemplate x:Key="WorkItemCommandsTemplate">
+        <ItemsControl ItemsSource="{Binding}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel IsItemsHost="True" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:CommandViewModel}">
+                    <TextBlock Margin="5,2">
+                        <Hyperlink Command="{Binding Command}">
+                            <Run Text="{Binding Text}"/>
+                        </Hyperlink>
+                    </TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DataTemplate>
+
+    <!-- Progress bar style depending on the status -->
+    <Style x:Key="WorkItemProgressBarStyle" TargetType="{x:Type ProgressBar}">
+        <Setter Property="Foreground" Value="Blue" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsCancelled}" Value="True">
+                <Setter Property="Foreground" Value="Red" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+</ResourceDictionary>
